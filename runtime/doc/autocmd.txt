@@ -716,7 +716,7 @@ InsertLeavePre			Just before leaving Insert mode.  Also when
 				cause trouble.
 							*InsertLeave*
 InsertLeave			Just after leaving Insert mode.  Also when
-				using CTRL-O |i_CTRL-O|.  But not for |i_CTRL-C|.
+				using CTRL-O |i_CTRL-O| and |i_CTRL-C|.
 							*MenuPopup*
 MenuPopup			Just before showing the popup menu (under the
 				right mouse button).  Useful for adjusting the
