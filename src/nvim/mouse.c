@@ -23,6 +23,7 @@
 #include "nvim/buffer_defs.h"
 #include "nvim/memline.h"
 #include "nvim/charset.h"
+#include "nvim/autocmd.h"
 
 #ifdef INCLUDE_GENERATED_DECLARATIONS
 # include "mouse.c.generated.h"
@@ -316,6 +317,8 @@ retnomove:
     VIsual_reselect = true;
     // if 'selectmode' contains "mouse", start Select mode
     may_start_select('o');
+    // Enter visual mode on mouse drag.
+    apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
     setmouse();
 
     if (p_smd && msg_silent == 0) {

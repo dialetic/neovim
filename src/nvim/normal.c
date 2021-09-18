@@ -965,6 +965,8 @@ normal_end:
       && s->oa.regname == 0) {
     if (restart_VIsual_select == 1) {
       VIsual_select = true;
+      // Re-enter select mode after CTRL-O.
+      apply_autocmds(EVENT_VISUALCHANGE, NULL, NULL, false, curbuf);
       showmode();
       restart_VIsual_select = 0;
     }
@@ -1773,6 +1775,8 @@ void do_pending_operator(cmdarg_T *cap, int old_col, bool gui_yank)
        */
       if (!gui_yank) {
         VIsual_active = false;
+        // Leave visual mode after an operator.
+        apply_autocmds(EVENT_VISUALLEAVE, NULL, NULL, false, curbuf);
         setmouse();
         mouse_dragging = 0;
         may_clear_cmdline();
@@ -2865,6 +2869,8 @@ bool do_mouse(oparg_T *oap, int c, int dir, long count, bool fixindent)
         VIsual_reselect = true;
         // start Select mode if 'selectmode' contains "mouse"
         may_start_select('o');
+        // Enter visual mode after a mouse double-click.
+        apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
         setmouse();
       }
       if ((mod_mask & MOD_MASK_MULTI_CLICK) == MOD_MASK_2CLICK) {
@@ -3045,6 +3051,11 @@ static int get_mouse_class(char_u *p)
 void end_visual_mode(void)
 {
   VIsual_active = false;
+  // Leave visual mode through standard method.
+  int save_got_int = got_int;
+  got_int = false;
+  apply_autocmds(EVENT_VISUALLEAVE, NULL, NULL, true, curbuf);
+  got_int |= save_got_int;
   setmouse();
   mouse_dragging = 0;
 
@@ -4849,6 +4860,8 @@ static void nv_ctrlg(cmdarg_T *cap)
 {
   if (VIsual_active) {  // toggle Selection/Visual mode
     VIsual_select = !VIsual_select;
+    // Enter visual or select mode when in the other.
+    apply_autocmds(EVENT_VISUALCHANGE, NULL, NULL, false, curbuf);
     showmode();
   } else if (!checkclearop(cap->oap)) {
     // print full name if count given or :cd used
@@ -4892,6 +4905,8 @@ static void nv_ctrlo(cmdarg_T *cap)
 {
   if (VIsual_active && VIsual_select) {
     VIsual_select = false;
+    // Enter visual mode for a single command when in select mode.
+    apply_autocmds(EVENT_VISUALCHANGE, NULL, NULL, false, curbuf);
     showmode();
     restart_VIsual_select = 2;          // restart Select mode later
   } else {
@@ -6680,6 +6695,8 @@ static void nv_visual(cmdarg_T *cap)
     } else {                                  // toggle char/block mode
                                               //           or char/line mode
       VIsual_mode = cap->cmdchar;
+      // Switch to char/line/block visual modes from another.
+      apply_autocmds(EVENT_VISUALCHANGE, NULL, NULL, false, curbuf);
       showmode();
     }
     redraw_curbuf_later(INVERTED);          // update the inversion
@@ -6694,6 +6711,8 @@ static void nv_visual(cmdarg_T *cap)
         // start Select mode when 'selectmode' contains "cmd"
         may_start_select('c');
       }
+      // Enter visual mode when reselecting an area (e.g. using count).
+      apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
       setmouse();
       if (p_smd && msg_silent == 0) {
         redraw_cmdline = true;              // show visual mode later
@@ -6783,6 +6802,8 @@ static void n_start_visual_mode(int c)
   VIsual_mode = c;
   VIsual_active = true;
   VIsual_reselect = true;
+  // Enter visual mode through standard method.
+  apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
   // Corner case: the 0 position in a tab may change when going into
   // virtualedit.  Recalculate curwin->w_cursor to avoid bad highlighting.
   //
@@ -6928,6 +6949,8 @@ static void nv_g_cmd(cmdarg_T *cap)
       } else {
         may_start_select('c');
       }
+      // Enter visual mode after 'gv' operator.
+      apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
       setmouse();
       redraw_curbuf_later(INVERTED);
       showmode();

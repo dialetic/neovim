@@ -110,6 +110,9 @@ return {
     'VimResized',             -- after Vim window was resized
     'VimResume',              -- after Nvim is resumed
     'VimSuspend',             -- before Nvim is suspended
+    'VisualChange',           -- when changing between Visual/Select modes
+    'VisualEnter',            -- just after entering Visual/Select mode
+    'VisualLeave',            -- just after leaving Visual/Select mode
     'WinClosed',              -- after closing a window
     'WinEnter',               -- after entering a window
     'WinLeave',               -- before leaving a window
