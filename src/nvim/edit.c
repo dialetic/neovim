@@ -7776,7 +7776,7 @@ static void ins_reg(void)
 
   // Disallow starting Visual mode here, would get a weird mode.
   if (!vis_active && VIsual_active) {
-    end_visual_mode();
+    end_visual_mode(false);
   }
 }
 

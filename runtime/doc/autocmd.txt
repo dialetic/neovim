@@ -957,6 +957,22 @@ User				Not executed automatically.  Use |:doautocmd|
 <							*UserGettingBored*
 UserGettingBored		When the user presses the same key 42 times.
 				Just kidding! :-)
+							*VisualChange*
+VisualChange			When changing between Visual/Select mode
+				types.  This includes switching between
+				char/line/block-wise modes for the same Visual
+				type, switching between Visual and Select
+				modes using |v_CTRL-G|, and transient switches
+				using |v_CTRL-O|.
+							*VisualEnter*
+VisualEnter			Just after entering Visual or Select mode.
+				Does not trigger during operators that
+				temporarily enter Visual mode, but does for
+				sequences like |gn| and |gv| that leave you in
+				Visual mode.
+							*VisualLeave*
+VisualLeave			Just after leaving Visual or Select mode.
+				Does not trigger on |v_CTRL-C|.
 							*VimEnter*
 VimEnter			After doing all the startup stuff, including
 				loading vimrc files, executing the "-c cmd"

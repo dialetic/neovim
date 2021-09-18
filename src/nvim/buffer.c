@@ -552,7 +552,7 @@ bool close_buffer(win_T *win, buf_T *buf, int action, bool abort_if_last)
       && !entered_free_all_mem
 #endif
       ) {
-    end_visual_mode();
+    end_visual_mode(false);
   }
 
   buf->b_nwindows = nwindows;
@@ -1252,7 +1252,7 @@ do_buffer(
 
     // When closing the current buffer stop Visual mode.
     if (buf == curbuf && VIsual_active) {
-      end_visual_mode();
+      end_visual_mode(false);
     }
 
     /*

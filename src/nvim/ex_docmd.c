@@ -7984,7 +7984,7 @@ static void ex_operators(exarg_T *eap)
   }
 
   if (VIsual_active) {
-    end_visual_mode();
+    end_visual_mode(false);
   }
 
   switch (eap->cmdidx) {

@@ -4383,6 +4383,8 @@ int current_search(long count, bool forward)
   }
 
   may_start_select('c');
+  // Enter Visual mode after jumping to result (e.g. 'gn').
+  apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
   setmouse();
   redraw_curbuf_later(INVERTED);
   showmode();

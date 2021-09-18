@@ -23,6 +23,7 @@
 #include "nvim/buffer_defs.h"
 #include "nvim/memline.h"
 #include "nvim/charset.h"
+#include "nvim/autocmd.h"
 
 #ifdef INCLUDE_GENERATED_DECLARATIONS
 # include "mouse.c.generated.h"
@@ -100,7 +101,7 @@ retnomove:
       return IN_SEP_LINE;
     }
     if (flags & MOUSE_MAY_STOP_VIS) {
-      end_visual_mode();
+      end_visual_mode(false);
       redraw_curbuf_later(INVERTED);            // delete the inversion
     }
     return IN_BUFFER;
@@ -167,7 +168,7 @@ retnomove:
                     ? col < wp->w_width_inner - fdc
                     : col >= fdc + (cmdwin_type == 0 && wp == curwin ? 0 : 1))
                 && (flags & MOUSE_MAY_STOP_VIS)))) {
-      end_visual_mode();
+      end_visual_mode(false);
       redraw_curbuf_later(INVERTED);            // delete the inversion
     }
     if (cmdwin_type != 0 && wp != curwin) {
@@ -224,7 +225,7 @@ retnomove:
     // keep_window_focus must be true
     // before moving the cursor for a left click, stop Visual mode
     if (flags & MOUSE_MAY_STOP_VIS) {
-      end_visual_mode();
+      end_visual_mode(false);
       redraw_curbuf_later(INVERTED);            // delete the inversion
     }
 
@@ -316,6 +317,8 @@ retnomove:
     VIsual_reselect = true;
     // if 'selectmode' contains "mouse", start Select mode
     may_start_select('o');
+    // Enter visual mode on mouse drag.
+    apply_autocmds(EVENT_VISUALENTER, NULL, NULL, false, curbuf);
     setmouse();
 
     if (p_smd && msg_silent == 0) {

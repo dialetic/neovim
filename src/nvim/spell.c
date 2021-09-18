@@ -2797,7 +2797,7 @@ void spell_suggest(int count)
       curwin->w_cursor.col = VIsual.col;
     }
     badlen++;
-    end_visual_mode();
+    end_visual_mode(false);
   } else
   // Find the start of the badly spelled word.
   if (spell_move_to(curwin, FORWARD, true, true, NULL) == 0
