@@ -395,6 +395,18 @@ CmdlineLeave			Before leaving the command-line (including
 				Note: `abort` can only be changed from false
 				to true: cannot execute an already aborted
 				cmdline by changing it to false.
+							*CmdlineLeavePost*
+CmdlineLeavePost		After leaving the command-line (including
+				non-interactive use of ":" in a mapping: use
+				|<Cmd>| instead to avoid this).
+				<afile> expands to the |cmdline-char|.
+				Sets these |v:event| keys:
+				    abort (mutable)
+				    cmdlevel
+				    cmdtype
+				Note: `abort` can only be changed from false
+				to true: cannot execute an already aborted
+				cmdline by changing it to false.
 							*CmdwinEnter*
 CmdwinEnter			After entering the command-line window.
 				Useful for setting options specifically for

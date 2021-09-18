@@ -2332,6 +2332,7 @@ getcmdline (
   save_cmdline(&save_ccline);
   char_u *retval = command_line_enter(firstc, count, indent);
   restore_cmdline(&save_ccline);
+  apply_autocmds(EVENT_CMDLINELEAVEPOST, NULL, NULL, false, curbuf);
   return retval;
 }
 
@@ -2382,6 +2383,7 @@ char *getcmdline_prompt(const char firstc, const char *const prompt,
     msg_col = msg_col_save;
   }
 
+  apply_autocmds(EVENT_CMDLINELEAVEPOST, NULL, NULL, false, curbuf);
   return ret;
 }
 

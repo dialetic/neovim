@@ -28,6 +28,7 @@ return {
     'CmdlineChanged',         -- command line was modified
     'CmdlineEnter',           -- after entering cmdline mode
     'CmdlineLeave',           -- before leaving cmdline mode
+    'CmdlineLeavePost',       -- after leaving cmdline mode
     'ColorScheme',            -- after loading a colorscheme
     'ColorSchemePre',         -- before loading a colorscheme
     'CompleteChanged',        -- after popup menu changed
